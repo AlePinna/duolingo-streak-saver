@@ -1,0 +1,17 @@
+version: 0.0
+
+os: linux
+
+files:
+  - source: /streakfreeze-1.0.0.jar
+    destination: /tmp
+
+hooks:
+  ApplicationStop:
+    - location: stop.sh
+      timeout: 180
+      runas: root
+  ApplicationStart:
+    - location: start.sh
+      timeout: 180
+      runas: root
