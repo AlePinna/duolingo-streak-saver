@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ps -ef | grep streakfreeze-1-0-0.jar | grep -v grep | awk '{print $2}' | xargs kill &
+pwd &> /home/ec2-user/directory.txt & ps -ef | grep streaksaver | grep -v grep | awk '{print $2}' | xargs kill &
