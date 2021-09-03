@@ -3,8 +3,8 @@ version: 0.0
 os: linux
 
 files:
-  - source: /
-    destination: /tmp
+  - source: /streaksaver-1.0.0.jar
+    destination: /home/ec2-user/
 
 hooks:
   ApplicationStart:
