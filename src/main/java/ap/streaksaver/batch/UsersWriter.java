@@ -19,7 +19,7 @@ public class UsersWriter implements ItemWriter<User> {
     BuyItemService buyItemService;
 
     @Override
-    public void write(List<? extends User> list) throws Exception {
+    public void write(List<? extends User> list) {
 
         for (var user : list.stream()
                 .filter(x -> x.isBuyStreakFreeze())
