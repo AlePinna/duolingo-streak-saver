@@ -7,6 +7,8 @@ import ap.streaksaver.service.LoginService;
 import ap.streaksaver.service.UserInfoService;
 import ap.streaksaver.utils.MiscUtils;
 import lombok.extern.slf4j.Slf4j;
+import nonapi.io.github.classgraph.utils.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,34 +29,42 @@ public class UsersProcessor implements ItemProcessor<User, User> {
     UserRepository userRepository;
 
     @Override
-    public User process(User user) throws Exception {
+    public User process(User user) {
 
-        ResponseEntity<UserInfoResponse> loginResponse = loginService.doLogin(user.getEmail(), user.getPassword());
+        try {
 
-        if (!loginResponse.getStatusCode().is2xxSuccessful()) {
+            ResponseEntity<UserInfoResponse> loginResponse = loginService.doLogin(user.getEmail(), user.getPassword());
 
-            log.error("Error during login for user {} - Status code {}", user.getEmail(), loginResponse.getStatusCodeValue());
-            if (loginResponse.getStatusCode().equals(HttpStatus.FORBIDDEN)) {
-                user.setActive(false);
-                userRepository.save(user);
+            if (!loginResponse.getStatusCode().is2xxSuccessful()) {
+
+                log.error("Error during login for user {} - Status code {}", user.getEmail(), loginResponse.getStatusCodeValue());
+                if (loginResponse.getStatusCode().equals(HttpStatus.FORBIDDEN)) {
+                    user.setActive(false);
+                    userRepository.save(user);
+                }
+                return user;
             }
-            return user;
+
+            UserInfoResponse.TrackingProperties trackingProperties = loginResponse.getBody() != null
+                    ? loginResponse.getBody().getTrackingProperties() : null;
+
+            if (trackingProperties != null && !trackingProperties.getHasItemStreakFreeze()
+                    && trackingProperties.getStreak() > 0 && trackingProperties.getLingots() >= 10) {
+
+                user.setLearningLanguage(trackingProperties.getLearningLanguage());
+                user.setBuyStreakFreeze(true);
+                user.setJwt(MiscUtils.getJwtHeader(loginResponse));
+
+            } else {
+                log.info("User {} can't buy a streak right now", user.getEmail());
+            }
+
+        } catch (Exception e){
+            log.error(Strings.EMPTY, e);
         }
 
-        UserInfoResponse.TrackingProperties trackingProperties = loginResponse.getBody() != null
-                ? loginResponse.getBody().getTrackingProperties() : null;
-
-        if (trackingProperties != null && !trackingProperties.getHasItemStreakFreeze()
-                && trackingProperties.getStreak() > 0 && trackingProperties.getLingots() >= 10) {
-
-            user.setLearningLanguage(trackingProperties.getLearningLanguage());
-            user.setBuyStreakFreeze(true);
-            user.setJwt(MiscUtils.getJwtHeader(loginResponse));
-
-        } else {
-            log.info("User {} can't buy a streak right now", user.getEmail());
-        }
         return user;
+
     }
 
 

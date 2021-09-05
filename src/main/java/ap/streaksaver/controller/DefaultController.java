@@ -12,14 +12,16 @@ import java.io.IOException;
 @ApiIgnore
 public class DefaultController implements ErrorController {
 
+    public static final String UI_PATH = "/swagger-ui/index.html";
+
     @RequestMapping("/error")
     public void handleErrorWithRedirect(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/swagger-ui/index.html");
+        response.sendRedirect(UI_PATH);
     }
 
     @RequestMapping(value = "/")
     public void redirect(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/swagger-ui/index.html");
+        response.sendRedirect(UI_PATH);
     }
 
 }
