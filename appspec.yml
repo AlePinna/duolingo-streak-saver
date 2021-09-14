@@ -3,7 +3,7 @@ version: 0.0
 os: linux
 
 files:
-  - source: /backend/streaksaver-1.0.0.jar
+  - source: /streaksaver-1.0.0.jar
     destination: /home/ec2-user/
 
 hooks:
