@@ -1,5 +1,6 @@
 package ap.streaksaver.controller;
 
+import ap.streaksaver.service.DeletionService;
 import ap.streaksaver.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,19 @@ class UserController {
     @Autowired
     private LoginService loginService;
 
-    @PostMapping("/loginAndSave")
-    public ResponseEntity<String> login(@RequestParam String identifier, @RequestParam String password) {
+    @Autowired
+    private DeletionService deletionService;
+
+    @PostMapping("/saveAccount")
+    public ResponseEntity<String> save(@RequestParam String identifier, @RequestParam String password) {
 
         return loginService.loginAndSaveUser(identifier.trim(), password.trim());
+    }
+
+    @PostMapping("/deleteAccount")
+    public ResponseEntity<String> delete(@RequestParam String identifier, @RequestParam String password) {
+
+        return deletionService.deleteUser(identifier.trim(), password.trim());
     }
 
 
