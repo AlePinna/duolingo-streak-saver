@@ -1,7 +1,7 @@
-package ap.streaksaver.batch;
+package eu.alessandropinna.streaksaver.batch;
 
-import ap.streaksaver.domain.User;
-import ap.streaksaver.service.BuyItemService;
+import eu.alessandropinna.streaksaver.domain.User;
+import eu.alessandropinna.streaksaver.service.BuyItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;

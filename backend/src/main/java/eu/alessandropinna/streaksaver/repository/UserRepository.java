@@ -1,6 +1,6 @@
-package ap.streaksaver.repository;
+package eu.alessandropinna.streaksaver.repository;
 
-import ap.streaksaver.domain.User;
+import eu.alessandropinna.streaksaver.domain.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface UserRepository extends MongoRepository<User, String> {}

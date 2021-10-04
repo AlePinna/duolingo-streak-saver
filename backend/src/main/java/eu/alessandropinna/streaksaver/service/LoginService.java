@@ -1,10 +1,10 @@
-package ap.streaksaver.service;
+package eu.alessandropinna.streaksaver.service;
 
-import ap.streaksaver.domain.User;
-import ap.streaksaver.dto.LoginRequest;
-import ap.streaksaver.dto.UserInfoResponse;
-import ap.streaksaver.repository.UserRepository;
-import ap.streaksaver.utils.MiscUtils;
+import eu.alessandropinna.streaksaver.domain.User;
+import eu.alessandropinna.streaksaver.dto.LoginRequest;
+import eu.alessandropinna.streaksaver.dto.UserInfoResponse;
+import eu.alessandropinna.streaksaver.repository.UserRepository;
+import eu.alessandropinna.utils.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;

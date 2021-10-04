@@ -1,13 +1,12 @@
-package ap.streaksaver.batch;
+package eu.alessandropinna.streaksaver.batch;
 
-import ap.streaksaver.domain.User;
-import ap.streaksaver.dto.UserInfoResponse;
-import ap.streaksaver.repository.UserRepository;
-import ap.streaksaver.service.LoginService;
-import ap.streaksaver.service.UserInfoService;
-import ap.streaksaver.utils.MiscUtils;
+import eu.alessandropinna.streaksaver.domain.User;
+import eu.alessandropinna.streaksaver.dto.UserInfoResponse;
+import eu.alessandropinna.streaksaver.repository.UserRepository;
+import eu.alessandropinna.streaksaver.service.LoginService;
+import eu.alessandropinna.streaksaver.service.UserInfoService;
+import eu.alessandropinna.utils.MiscUtils;
 import lombok.extern.slf4j.Slf4j;
-import nonapi.io.github.classgraph.utils.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;

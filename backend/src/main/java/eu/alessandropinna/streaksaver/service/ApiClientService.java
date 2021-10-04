@@ -1,4 +1,4 @@
-package ap.streaksaver.service;
+package eu.alessandropinna.streaksaver.service;
 
 import com.mongodb.lang.Nullable;
 import lombok.Getter;

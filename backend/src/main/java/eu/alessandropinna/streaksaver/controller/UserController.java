@@ -1,9 +1,8 @@
-package ap.streaksaver.controller;
+package eu.alessandropinna.streaksaver.controller;
 
-import ap.streaksaver.service.DeletionService;
-import ap.streaksaver.service.LoginService;
+import eu.alessandropinna.streaksaver.service.DeletionService;
+import eu.alessandropinna.streaksaver.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

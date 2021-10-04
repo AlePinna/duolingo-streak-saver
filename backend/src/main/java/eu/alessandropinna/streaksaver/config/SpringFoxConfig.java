@@ -1,4 +1,4 @@
-package ap.streaksaver.config;
+package eu.alessandropinna.streaksaver.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package ap.streaksaver.dto;
+package eu.alessandropinna.streaksaver.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

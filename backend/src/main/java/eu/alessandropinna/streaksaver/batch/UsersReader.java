@@ -1,11 +1,8 @@
-package ap.streaksaver.batch;
+package eu.alessandropinna.streaksaver.batch;
 
-import ap.streaksaver.domain.User;
-import ap.streaksaver.repository.UserRepository;
+import eu.alessandropinna.streaksaver.domain.User;
+import eu.alessandropinna.streaksaver.repository.UserRepository;
 import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.NonTransientResourceException;
-import org.springframework.batch.item.ParseException;
-import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;

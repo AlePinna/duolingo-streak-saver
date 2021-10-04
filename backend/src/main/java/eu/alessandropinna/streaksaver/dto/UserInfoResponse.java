@@ -1,4 +1,4 @@
-package ap.streaksaver.dto;
+package eu.alessandropinna.streaksaver.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

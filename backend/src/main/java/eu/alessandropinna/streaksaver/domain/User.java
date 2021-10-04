@@ -1,4 +1,4 @@
-package ap.streaksaver.domain;
+package eu.alessandropinna.streaksaver.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

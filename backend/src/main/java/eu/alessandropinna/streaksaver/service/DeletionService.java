@@ -1,13 +1,10 @@
-package ap.streaksaver.service;
+package eu.alessandropinna.streaksaver.service;
 
-import ap.streaksaver.domain.User;
-import ap.streaksaver.dto.UserInfoResponse;
-import ap.streaksaver.repository.UserRepository;
+import eu.alessandropinna.streaksaver.domain.User;
+import eu.alessandropinna.streaksaver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
-import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;

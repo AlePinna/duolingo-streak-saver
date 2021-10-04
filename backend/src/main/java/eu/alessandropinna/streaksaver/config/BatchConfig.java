@@ -1,12 +1,11 @@
-package ap.streaksaver.config;
+package eu.alessandropinna.streaksaver.config;
 
-import ap.streaksaver.batch.UsersProcessor;
-import ap.streaksaver.batch.UsersReader;
-import ap.streaksaver.batch.UsersWriter;
-import ap.streaksaver.domain.User;
+import eu.alessandropinna.streaksaver.batch.UsersProcessor;
+import eu.alessandropinna.streaksaver.batch.UsersReader;
+import eu.alessandropinna.streaksaver.batch.UsersWriter;
+import eu.alessandropinna.streaksaver.domain.User;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.beans.factory.annotation.Autowired;

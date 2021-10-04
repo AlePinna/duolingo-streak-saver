@@ -1,4 +1,4 @@
-package ap.streaksaver.utils;
+package eu.alessandropinna.utils;
 
 import org.springframework.http.ResponseEntity;
 

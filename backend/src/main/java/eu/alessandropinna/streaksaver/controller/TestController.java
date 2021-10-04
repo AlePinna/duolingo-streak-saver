@@ -1,4 +1,4 @@
-package ap.streaksaver.controller;
+package eu.alessandropinna.streaksaver.controller;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
