@@ -17,16 +17,12 @@ import java.util.Objects;
 @Component
 public class PasswordUtils {
 
-    @Value("key64")
-    private String key64;
+    private final SecretKey secretKey;
 
-    private SecretKey secretKey;
+    public PasswordUtils(@Value("${encryption.key}") String key64) {
 
-    {
-        {
-            byte[] decodedKey = Base64.getDecoder().decode(key64);
-            secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-        }
+        byte[] decodedKey = Base64.getDecoder().decode(key64);
+        secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
     }
 
     public Pair<String, String> hashNewPassword(String clearPassword) throws NoSuchAlgorithmException {

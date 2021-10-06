@@ -15,6 +15,7 @@
 	<description>Duolingo Streak Saver</description>
 	<properties>
 		<java.version>11</java.version>
+		<encryption.key>TXlTd2lzc25lc3MyOTAz</encryption.key>
 	</properties>
 	<dependencies>
 		<dependency>
