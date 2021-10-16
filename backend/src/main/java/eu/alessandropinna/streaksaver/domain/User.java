@@ -1,6 +1,5 @@
 package eu.alessandropinna.streaksaver.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +24,14 @@ public class User {
 
     private boolean active;
 
+    private boolean encrypted;
+
+    private String keyHash;
+
+    private String hashSalt;
+
     @Transient
-    private boolean buyStreakFreeze = false;
+    private boolean buyStreakFreeze;
 
     @Transient
     private String jwt;

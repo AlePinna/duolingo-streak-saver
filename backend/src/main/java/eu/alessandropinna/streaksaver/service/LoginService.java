@@ -5,12 +5,21 @@ import eu.alessandropinna.streaksaver.dto.LoginRequest;
 import eu.alessandropinna.streaksaver.dto.UserInfoResponse;
 import eu.alessandropinna.streaksaver.repository.UserRepository;
 import eu.alessandropinna.utils.MiscUtils;
+import eu.alessandropinna.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,7 +29,10 @@ public class LoginService extends ApiClientService {
     @Autowired
     private UserRepository userRepository;
 
-    public LoginService (@Value("${duolingo.api.login-url}") String apiUrl){
+    @Autowired
+    private PasswordUtils passwordUtils;
+
+    public LoginService(@Value("${duolingo.api.login-url}") String apiUrl) {
         super(apiUrl);
     }
 
@@ -40,7 +52,7 @@ public class LoginService extends ApiClientService {
         return this.postForEntity(getUrl(), httpEntity, UserInfoResponse.class);
     }
 
-    public ResponseEntity<String> loginAndSaveUser(String identifier, String password) {
+    public ResponseEntity<String> loginAndSaveUser(String identifier, String password) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
 
         if (ObjectUtils.isEmpty(identifier) || ObjectUtils.isEmpty(password)) {
             return ResponseEntity.badRequest().build();
@@ -48,16 +60,16 @@ public class LoginService extends ApiClientService {
 
         Optional<User> userOpt = userRepository.findById(identifier);
         boolean saveUser = !(userOpt.isPresent()
-            && password.equals(userOpt.get().getPassword())
-            && userOpt.get().isActive()
-            && userOpt.map(User::getUserId).isPresent());
+                && passwordUtils.isPasswordMatching(password, userOpt.get().getPassword())
+                && userOpt.get().isActive()
+                && userOpt.map(User::getUserId).isPresent());
 
         ResponseEntity<UserInfoResponse> responseEntity = doLogin(identifier, password);
 
         if (responseEntity.getStatusCode().is2xxSuccessful() && saveUser) {
 
             String userId = userOpt.map(User::getUserId).orElse(null);
-            if (userId == null){
+            if (userId == null) {
                 var userInfo = responseEntity.getBody();
                 userId = userInfo != null && userInfo.getTrackingProperties() != null ?
                         userInfo.getTrackingProperties().getUserId() : null;
@@ -65,7 +77,9 @@ public class LoginService extends ApiClientService {
 
             userRepository.save(User.builder()
                     .email(identifier)
-                    .password(password)
+                    .password(passwordUtils.encrypt(password))
+                    .hashSalt(passwordUtils.hashPair.getFirst())
+                    .keyHash(passwordUtils.hashPair.getSecond())
                     .active(true)
                     .userId(userId)
                     .build());

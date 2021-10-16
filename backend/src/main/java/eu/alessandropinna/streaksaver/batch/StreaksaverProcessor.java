@@ -6,6 +6,7 @@ import eu.alessandropinna.streaksaver.repository.UserRepository;
 import eu.alessandropinna.streaksaver.service.LoginService;
 import eu.alessandropinna.streaksaver.service.UserInfoService;
 import eu.alessandropinna.utils.MiscUtils;
+import eu.alessandropinna.utils.PasswordUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.batch.item.ItemProcessor;
@@ -16,23 +17,27 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class UsersProcessor implements ItemProcessor<User, User> {
+public class StreaksaverProcessor implements ItemProcessor<User, User> {
 
     @Autowired
-    LoginService loginService;
+    private LoginService loginService;
 
     @Autowired
-    UserInfoService userInfoService;
+    private UserInfoService userInfoService;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordUtils passwordUtils;
 
     @Override
     public User process(User user) {
 
         try {
 
-            ResponseEntity<UserInfoResponse> loginResponse = loginService.doLogin(user.getEmail(), user.getPassword());
+            String decryptedPassword = passwordUtils.decrypt(user.getPassword());
+            ResponseEntity<UserInfoResponse> loginResponse = loginService.doLogin(user.getEmail(), decryptedPassword);
 
             if (!loginResponse.getStatusCode().is2xxSuccessful()) {
 
@@ -58,7 +63,7 @@ public class UsersProcessor implements ItemProcessor<User, User> {
                 log.info("User {} can't buy a streak right now", user.getEmail());
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error(Strings.EMPTY, e);
         }
 

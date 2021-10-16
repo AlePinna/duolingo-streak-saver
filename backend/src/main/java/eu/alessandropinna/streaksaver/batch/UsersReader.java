@@ -29,7 +29,7 @@ public class UsersReader implements ItemReader<User> {
     @Override
     public User read() {
         var user = usersIterator.hasNext() ? usersIterator.next() : null;
-        if (user == null){
+        if (user == null) {
             CompletableFuture.runAsync(this::initialize);
         }
         return user;

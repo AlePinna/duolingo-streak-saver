@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BuyItemService extends ApiClientService {
 
-    public BuyItemService(@Value("${duolingo.api.buy-item-url}") String apiUrl){
+    public BuyItemService(@Value("${duolingo.api.buy-item-url}") String apiUrl) {
         super(apiUrl);
     }
 

@@ -2,6 +2,7 @@ package eu.alessandropinna.streaksaver.service;
 
 import eu.alessandropinna.streaksaver.domain.User;
 import eu.alessandropinna.streaksaver.repository.UserRepository;
+import eu.alessandropinna.utils.PasswordUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @Service
@@ -21,7 +27,10 @@ public class DeletionService {
     @Autowired
     private LoginService loginService;
 
-    public ResponseEntity<String> deleteUser(String identifier, String password) {
+    @Autowired
+    private PasswordUtils passwordUtils;
+
+    public ResponseEntity<String> deleteUser(String identifier, String password) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
 
         if (ObjectUtils.isEmpty(identifier) || ObjectUtils.isEmpty(password)) {
             return ResponseEntity.badRequest().build();
@@ -35,7 +44,7 @@ public class DeletionService {
 
         User user = userOpt.get();
 
-        if (password.equals(user.getPassword()) || isLogged(identifier, password)) {
+        if (passwordUtils.isPasswordMatching(password, user.getPassword()) || isLogged(identifier, password)) {
             userRepository.delete(userOpt.get());
             return ResponseEntity.ok("Account successfully deleted");
         } else {
