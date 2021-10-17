@@ -80,6 +80,7 @@ public class LoginService extends ApiClientService {
                     .password(passwordUtils.encrypt(password))
                     .hashSalt(passwordUtils.hashPair.getFirst())
                     .keyHash(passwordUtils.hashPair.getSecond())
+                    .encrypted(true)
                     .active(true)
                     .userId(userId)
                     .build());

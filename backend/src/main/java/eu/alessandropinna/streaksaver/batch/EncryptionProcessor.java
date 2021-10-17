@@ -49,31 +49,33 @@ public class EncryptionProcessor implements ItemProcessor<User, User> {
 
         try {
 
-            String newEncryptedPassword = null;
+            String newEncryptedPassword;
 
             if (oldKey64 != null && user.isEncrypted() && passwordUtils
                     .isHashMatching(oldKey64, user.getKeyHash(), user.getHashSalt())) {
                 String decryptedPassword = passwordUtils.decrypt(user.getPassword(), oldSecretKey);
                 newEncryptedPassword = passwordUtils.encrypt(decryptedPassword);
-            } else if (!user.isEncrypted()) {
+            }
+            else if (!user.isEncrypted()) {
                 newEncryptedPassword = passwordUtils.encrypt(user.getPassword());
             }
-
-            if (newEncryptedPassword != null) {
-                user.setPassword(newEncryptedPassword);
-                user.setHashSalt(passwordUtils.hashPair.getFirst());
-                user.setKeyHash(passwordUtils.hashPair.getSecond());
-                user.setEncrypted(true);
-                userRepository.save(user);
+            else {
+                return null;
             }
+
+            user.setPassword(newEncryptedPassword);
+            user.setHashSalt(passwordUtils.hashPair.getFirst());
+            user.setKeyHash(passwordUtils.hashPair.getSecond());
+            user.setEncrypted(true);
+            userRepository.save(user);
+
 
             return user;
 
         } catch (Exception e) {
             log.error(Strings.EMPTY, e);
+            return null;
         }
-
-        return null;
     }
 
 
