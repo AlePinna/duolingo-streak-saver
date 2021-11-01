@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document("users-develop")
+@Document("users") //Switch to "users-develop" for testing purposes
 public class User {
 
     @Id
