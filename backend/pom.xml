@@ -19,8 +19,8 @@
 		<mongodb.database></mongodb.database>
 		<mongodb.username></mongodb.username>
 		<mongodb.password></mongodb.password>
-		<mongodb.port>localhost</mongodb.port>
-		<mongodb.host>27017</mongodb.host>
+		<mongodb.port></mongodb.port>
+		<mongodb.host></mongodb.host>
 	</properties>
 	<dependencies>
 		<dependency>
