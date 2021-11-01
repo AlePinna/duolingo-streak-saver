@@ -1,10 +1,7 @@
 package eu.alessandropinna.streaksaver.controller;
 
 import eu.alessandropinna.utils.PasswordUtils;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameter;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
@@ -50,9 +47,9 @@ class AdminController {
     @PostMapping("/encryptBatch")
     public void encryptBatch(@RequestParam(required = false) String oldKey64) throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
 
-        var jobParameters = new JobParameters();
-        jobParameters.getParameters().put("oldKey64", new JobParameter(oldKey64));
-        jobLauncher.run(jobEncrypt, jobParameters);
+        var jobParametersBuilder = new JobParametersBuilder();
+        jobParametersBuilder.addString("oldKey64", oldKey64);
+        jobLauncher.run(jobEncrypt, jobParametersBuilder.toJobParameters());
     }
 
     //@PostMapping("/encrypt")

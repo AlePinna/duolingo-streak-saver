@@ -8,9 +8,9 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -19,7 +19,7 @@ import java.util.Base64;
 
 @Slf4j
 @Component
-@Scope(value = "step")
+@StepScope
 public class EncryptionProcessor implements ItemProcessor<User, User> {
 
     private String oldKey64;
