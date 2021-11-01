@@ -15,7 +15,12 @@
 	<description>Duolingo Streak Saver</description>
 	<properties>
 		<java.version>11</java.version>
-		<encryption.key>TXlTd2lzc25lc3MyOTAz</encryption.key>
+		<encryption.key></encryption.key>
+		<mongodb.database></mongodb.database>
+		<mongodb.username></mongodb.username>
+		<mongodb.password></mongodb.password>
+		<mongodb.port>localhost</mongodb.port>
+		<mongodb.host>27017</mongodb.host>
 	</properties>
 	<dependencies>
 		<dependency>
