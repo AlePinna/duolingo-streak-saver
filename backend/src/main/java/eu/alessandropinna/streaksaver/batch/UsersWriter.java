@@ -16,6 +16,6 @@ public class UsersWriter implements ItemWriter<User> {
     public void write(List<? extends User> list) {
 
         log.info("Password encrypted for users " + list.stream()
-                .map(u -> u.getUserId()).collect(Collectors.toList()));
+                .map(u -> u.getEmail()).collect(Collectors.toList()));
     }
 }

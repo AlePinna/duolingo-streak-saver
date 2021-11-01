@@ -36,8 +36,11 @@ public class StreaksaverProcessor implements ItemProcessor<User, User> {
 
         try {
 
-            String decryptedPassword = passwordUtils.decrypt(user.getPassword());
-            ResponseEntity<UserInfoResponse> loginResponse = loginService.doLogin(user.getEmail(), decryptedPassword);
+            if (!user.isActive())
+                return null;
+
+            String password = user.isEncrypted() ? passwordUtils.decrypt(user.getPassword()) : user.getPassword();
+            ResponseEntity<UserInfoResponse> loginResponse = loginService.doLogin(user.getEmail(), password);
 
             if (!loginResponse.getStatusCode().is2xxSuccessful()) {
 

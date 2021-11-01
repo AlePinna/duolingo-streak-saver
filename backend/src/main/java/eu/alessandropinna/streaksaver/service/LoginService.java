@@ -59,14 +59,10 @@ public class LoginService extends ApiClientService {
         }
 
         Optional<User> userOpt = userRepository.findById(identifier);
-        boolean saveUser = !(userOpt.isPresent()
-                && passwordUtils.isPasswordMatching(password, userOpt.get().getPassword())
-                && userOpt.get().isActive()
-                && userOpt.map(User::getUserId).isPresent());
 
         ResponseEntity<UserInfoResponse> responseEntity = doLogin(identifier, password);
 
-        if (responseEntity.getStatusCode().is2xxSuccessful() && saveUser) {
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
 
             String userId = userOpt.map(User::getUserId).orElse(null);
             if (userId == null) {

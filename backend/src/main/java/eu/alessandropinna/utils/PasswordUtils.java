@@ -11,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Objects;
+import java.util.Set;
 
 public class PasswordUtils {
 
@@ -20,13 +21,15 @@ public class PasswordUtils {
 
     public final Pair<String, String> hashPair;
 
+    private final Set<Integer> acceptedKeySizes = Set.of(16, 24, 32);
+
     public PasswordUtils(String key64) throws NoSuchAlgorithmException {
-        if (key64 == null) {
-            throw new IllegalStateException("Encryption key is missing from properties");
+        byte[] decodedKey;
+        if (key64 == null || !acceptedKeySizes.contains((decodedKey = Base64.getDecoder().decode(key64)).length)) {
+            throw new IllegalStateException("Invalid encryption key");
         }
         this.key64 = key64;
         hashPair = newHash(key64);
-        byte[] decodedKey = Base64.getDecoder().decode(key64);
         secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
     }
 

@@ -12,6 +12,8 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -36,7 +38,7 @@ public class EncryptionProcessor implements ItemProcessor<User, User> {
     public void beforeStep(final StepExecution stepExecution) {
         JobParameters jobParameters = stepExecution.getJobParameters();
         oldKey64 = jobParameters.getString("oldKey64");
-        if (oldKey64 != null) {
+        if (!ObjectUtils.isEmpty(oldKey64)) {
             byte[] decodedKey = Base64.getDecoder().decode(oldKey64);
             oldSecretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
         } else {

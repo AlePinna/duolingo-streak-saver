@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Component
@@ -21,9 +22,8 @@ public class UsersReader implements ItemReader<User> {
 
     @PostConstruct
     private void initialize() {
-        usersIterator = userRepository.findAll(Example.of(
-                User.builder().active(true).build()))
-                .iterator();
+        List<User> users = userRepository.findAll();
+        usersIterator = users.iterator();
     }
 
     @Override
