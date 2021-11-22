@@ -20,7 +20,6 @@ public class UsersReader implements ItemReader<User> {
 
     private Iterator<User> usersIterator;
 
-    @PostConstruct
     private void initialize() {
         List<User> users = userRepository.findAll();
         usersIterator = users.iterator();
@@ -28,9 +27,14 @@ public class UsersReader implements ItemReader<User> {
 
     @Override
     public User read() {
-        var user = usersIterator.hasNext() ? usersIterator.next() : null;
-        if (user == null) {
-            CompletableFuture.runAsync(this::initialize);
+        User user = null;
+        if (usersIterator == null) {
+            initialize();
+        }
+        if (usersIterator.hasNext()){
+            user = usersIterator.next();
+        } else {
+            usersIterator = null;
         }
         return user;
     }

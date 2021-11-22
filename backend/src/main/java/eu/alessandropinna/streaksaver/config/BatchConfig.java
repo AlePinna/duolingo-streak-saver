@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 @Configuration
 public class BatchConfig {
 
@@ -57,6 +60,11 @@ public class BatchConfig {
                 .writer(writer)
                 .allowStartIfComplete(true)
                 .build();
+    }
+
+    @Bean
+    public ReadWriteLock lock() {
+        return new ReentrantReadWriteLock();
     }
 
 }

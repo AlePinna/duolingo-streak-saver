@@ -14,6 +14,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.locks.ReadWriteLock;
 
 @RestController
 @RequestMapping("/user")
@@ -25,16 +26,29 @@ class UserController {
     @Autowired
     private DeletionService deletionService;
 
+    @Autowired
+    private ReadWriteLock lock;
+
     @PostMapping("/saveAccount")
     public ResponseEntity<String> save(@RequestParam String identifier, @RequestParam String password) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
 
-        return loginService.loginAndSaveUser(identifier.trim(), password.trim());
+        try {
+            lock.writeLock().lock();
+            return loginService.loginAndSaveUser(identifier.trim(), password.trim());
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     @PostMapping("/deleteAccount")
     public ResponseEntity<String> delete(@RequestParam String identifier, @RequestParam String password) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
 
-        return deletionService.deleteUser(identifier.trim(), password.trim());
+        try {
+            lock.writeLock().lock();
+            return deletionService.deleteUser(identifier.trim(), password.trim());
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
 

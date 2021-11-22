@@ -20,12 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+import java.util.concurrent.locks.ReadWriteLock;
 
 @RestController
 @RequestMapping("/admin")
@@ -45,12 +41,22 @@ class AdminController {
     @Autowired
     private PasswordUtils passwordUtils;
 
+    @Autowired
+    private ReadWriteLock lock;
+
     private long jobId = 0;
 
     @Scheduled(cron = "${batch.cron-exp}")
     public void streaksaverBatch() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
 
-        jobLauncher.run(jobStreaksaver, new JobParameters());
+        try {
+            lock.writeLock().lock();
+            jobLauncher.run(jobStreaksaver, new JobParameters());
+        }
+        finally {
+            lock.writeLock().unlock();
+        }
+
     }
 
     @PostMapping("/streaksaverBatch")
@@ -80,21 +86,15 @@ class AdminController {
         var jobParametersBuilder = new JobParametersBuilder();
         jobParametersBuilder.addString("oldKey64", oldKey64);
         jobParametersBuilder.addLong("jobId", ++jobId);
-        jobLauncher.run(jobEncrypt, jobParametersBuilder.toJobParameters());
+
+        try {
+            lock.writeLock().lock();
+            jobLauncher.run(jobEncrypt, jobParametersBuilder.toJobParameters());
+        } finally {
+            lock.writeLock().unlock();
+        }
 
         return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    //@PostMapping("/encrypt")
-    public String encrypt(@RequestParam String text) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
-
-        return passwordUtils.encrypt(text);
-    }
-
-    //@PostMapping("/decrypt")
-    public String decrypt(@RequestParam String text) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
-
-        return passwordUtils.decrypt(text);
     }
 
 
